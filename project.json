@@ -1,0 +1,26 @@
+{
+  "overview": "A premium multi-page website for Aura Web Design, a digital agency offering custom websites, e-commerce solutions, and business growth services. Features a dark luxury aesthetic with gold accents, glassmorphism cards, and smooth animations across 5 pages.",
+  "features": [
+    "Dark luxury theme with black background and gold (#D4AF37) accents",
+    "5 fully responsive pages: Home, Services, Portfolio, Pricing, Contact",
+    "Glassmorphism card styling throughout",
+    "Scroll-triggered fade and zoom animations",
+    "Fixed navbar with mobile hamburger menu",
+    "Floating WhatsApp contact button",
+    "Clickable phone and Instagram contact links",
+    "3-tier pricing display with highlighted Standard plan",
+    "6-item portfolio grid with hover zoom effects",
+    "Contact form with email submission"
+  ],
+  "category": "business",
+  "tags": [
+    "agency",
+    "portfolio",
+    "dark-theme",
+    "luxury",
+    "glassmorphism",
+    "multi-page",
+    "web-design"
+  ],
+  "last_updated": "2026-04-10T10:26:33.049Z"
+}
