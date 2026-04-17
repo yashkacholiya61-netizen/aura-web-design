@@ -1,39 +1,44 @@
-# Design Brief
+# Design Brief — flowebdesign
 
 ## Direction
-Aura Web Design — World-class Awwwards-grade luxury digital agency with sophisticated layered glassmorphism, museum-quality color precision, and choreographed micro-interactions that elevate every touchpoint.
+Luxury digital agency: museum-black OKLCH foundation, vibrant gold accents, purple→blue gradients. Multi-layer glassmorphism, 3D card tilt, choreographed micro-animations. Premium brand language instantly recognizable.
 
 ## Tone
-Refined maximalism meets minimalist luxury: impossibly dark OKLCH 0.10 L foundation with vibrant gold metallic accents (0.72 L), multi-layered glass effects, elevated shadows creating depth perception, and purposeful animation choreography. Conveys cutting-edge digital expertise with approachable warmth.
+Refined luxury + interactive sophistication. Museum-black (0.10 L) foundation, vibrant gold (0.72 L), purple→blue modern accents, multi-layered glass, purposeful motion choreography. Cuts-edge digital expertise + approachable warmth.
 
 ## Differentiation
-Premium multi-layer glassmorphism with dual-opacity effects (`.glass` 8% opacity, `.glass-elevated` 12% with shadow), gold glow insets, and sophisticated shadow hierarchy (6-tier system) create instantly recognizable luxury brand language. Serif accent font (Fraunces) + sans-serif geometric pairing signals editorial sophistication.
+Premium multi-layer glassmorphism (8% base, 12% elevated opacity with dual blur layers), gold inset glows, purple→blue gradient accents, 3D card tilt with perspective transform, spotlight hover beams, custom gradient cursor ring, serif accent typography (Fraunces) + geometric sans (Space Grotesk). Instantly differentiates from generic tech sites.
 
 ## Color Palette
 
-| Token         | OKLCH         | Role                                    |
-| ------------- | ------------- | --------------------------------------- |
-| background    | 0.10 0.01 240 | Museum-black luxury foundation          |
-| foreground    | 0.96 0.005 0  | Pure near-white, maximum clarity        |
-| card          | 0.15 0.02 240 | Primary glass layer, subtle elevation   |
-| popover       | 0.18 0.025 240| Secondary glass layer for depth         |
-| primary       | 0.72 0.15 70  | Vibrant warm gold (enhanced chroma)    |
-| secondary     | 0.35 0.03 240 | Rich slate for content backgrounds       |
-| muted         | 0.25 0.02 240 | Sophisticated grey for secondary text   |
-| success       | 0.68 0.15 140 | Premium emerald accent                  |
-| warning       | 0.75 0.18 60  | Warm amber accent                       |
+| Token            | OKLCH         | Role                                    |
+| ---------------- | ------------- | --------------------------------------- |
+| background       | 0.10 0.01 240 | Museum-black luxury foundation          |
+| foreground       | 0.96 0.005 0  | Pure near-white, maximum clarity        |
+| card             | 0.15 0.02 240 | Primary glass layer, subtle elevation   |
+| popover          | 0.18 0.025 240| Secondary glass layer for depth         |
+| primary          | 0.72 0.15 70  | Vibrant warm gold accent                |
+| accent-purple    | 0.65 0.17 310 | Modern purple gradient start            |
+| accent-blue      | 0.58 0.14 255 | Modern blue gradient end                |
+| secondary        | 0.35 0.03 240 | Rich slate for content backgrounds       |
+| muted            | 0.25 0.02 240 | Sophisticated grey for secondary text   |
+| success          | 0.68 0.15 140 | Premium emerald accent                  |
+| warning          | 0.75 0.18 60  | Warm amber accent                       |
 
 ## Typography
 
-- Display: Space Grotesk — bold geometric headlines, hero text, maximalist sans-serif authority.
-- Accent: Fraunces — luxury serif for testimonials, quotes, premium feature callouts. Italic for elegance.
-- Body: DM Sans — body copy, UI labels, humanist refined sans-serif readability.
-- Mono: Geist Mono — code blocks, technical content, monospace elegance.
-- Scale: hero `text-7xl md:text-8xl font-bold tracking-tight`, h2 `text-5xl md:text-6xl font-bold`, premium callout `font-accent italic text-2xl`, label `text-xs font-semibold tracking-widest`, body `text-base md:text-lg leading-relaxed`.
+| Font           | Role                                           | Files Staged              |
+|----------------|------------------------------------------------|---------------------------|
+| Space Grotesk  | Headlines, hero text, geometric authority      | SpaceGrotesk.woff2        |
+| DM Sans        | Body copy, UI labels, humanist readability     | DMSans.woff2              |
+| Fraunces       | Testimonials, quotes, luxury serif callouts    | Fraunces.woff2            |
+| Geist Mono     | Code blocks, technical content                 | GeistMono.woff2           |
+
+Scale: hero `text-7xl md:text-8xl font-bold tracking-tight`, h2 `text-5xl md:text-6xl font-bold`, accent `font-accent italic text-2xl`, label `text-xs font-semibold tracking-widest`, body `text-base md:text-lg leading-relaxed`.
 
 ## Elevation & Depth
 
-6-tier shadow system: `xs` (minimal), `sm` (cards), `lg` (floats), `elevated` (primary elements + gold accent inset), `premium` (modals/overlays). Glass cards: 8% base opacity with `backdrop-blur-lg` (not md), 12% elevated with `backdrop-blur-xl`. Borders: white/15 base, white/20 elevated. Inset gold glow adds luxury texture.
+6-tier shadow system: `xs` (minimal 0.08x), `sm` (cards 0.12x), `md` (objects 0.22x), `lg` (floats 0.30x), `elevated` (primary + inset gold), `premium` (modals 0.55x). Glass cards: 8% base + `backdrop-blur-lg`, 12% elevated + `backdrop-blur-xl`. Borders: rgba(255,255,255,0.08-0.20) tiered by elevation.
 
 ## Structural Zones
 
@@ -47,29 +52,36 @@ Premium multi-layer glassmorphism with dual-opacity effects (`.glass` 8% opacity
 
 ## Spacing & Rhythm
 
-Hero: 10vh min-height, generous padding (py-24 md:py-32 lg:py-40). Sections: px-6 md:px-12 lg:px-20, py-20 md:py-28. Card gaps: gap-6 md:gap-8. Micro: gap-2-3 for labels/badges. Breathing room alternates dense card grids with muted-background spacers.
+Hero: 10vh min-height, py-24 md:py-32 lg:py-40. Sections: px-6 md:px-12 lg:px-20, py-20 md:py-28. Card grids: gap-6 md:gap-8, staggered fade-in with 50ms per card. Labels/badges: gap-2-3. Breathing room via alternating card sections + muted-bg spacers.
 
 ## Component Patterns
 
-- Buttons: Primary gold `bg-primary`, hover `scale-105` + `shadow-elevated`, secondary `glass hover:glass-elevated` + scale, icon-only transparent with `hover-gold`. All use `transition-premium`.
-- Cards: `.glass` or `.glass-elevated`, hover `scale-105 shadow-elevated gold-glow-subtle`, `rounded-lg`, staggered entrance animations.
-- Badges: Success (0.68 L emerald), warning (0.75 L amber), destructive (0.55 L red), all on semi-transparent dark backgrounds with premium borders.
-- Typography: Serif accent for testimonials/quotes, uppercase labels with `tracking-widest`, hero with `font-bold tracking-tight`, body with `leading-relaxed`.
+**Buttons:** Primary gold `bg-primary text-primary-foreground` + scale-105 + shadow-elevated hover. Secondary `.glass` + gradient accent + scale-104. Icons: transparent + hover-gold gradient.
+**Cards:** `.glass`/`.glass-elevated` + `.card-tilt` (3D hover) + `.spotlight-effect` (gradient beam), scale-105 + shadow-elevated hover, rounded-lg, staggered entrance animation.
+**Badges:** Success (0.68 L green), warning (0.75 L amber), destructive (0.55 L red) on semi-transparent dark with premium borders.
+**Inputs:** border-border + focus:ring-2 ring-ring, rounded-lg, 0.20 L background.
+**Text:** Serif accents for testimonials/quotes, uppercase labels tracking-widest, hero bold tracking-tight, body leading-relaxed.
 
 ## Motion
 
-- Entrance: `fade-in-up` (0.6s ease-out) for sections, `scale-in` (0.4s ease-out) for cards, `float-slow` (4s ease-in-out) for decorative elements. Stagger delays 50ms per card.
-- Interaction: Gold text glow on hover (`hover-gold`), card scale (`hover:scale-105`), shadow elevation, 0.4s `transition-premium` (cubic-bezier easing for premium feel).
-- Decorative: `float` (3s) on hero accents, `glow-pulse` (2.5s) on primary highlights, `shimmer` (2s) on premium text, all respecting `prefers-reduced-motion`.
+**Entrance:** `fade-in-up` (0.7s) full sections, `scale-in` (0.4s) cards, `float-slow` (4s) decorative accents. Stagger: 50ms per card.
+**Interaction:** 3D card tilt on mouse move (max 15° rotateX/Y), spotlight gradient beam on hover, scale-105 + shadow-elevated elevation, gradient text button hover, cursor-ring animation.
+**Decorative:** `float` (3s) hero elements, `glow-pulse` (2.5s) primary highlights, `shimmer` (2.5s) luxury text, `spotlight-move` (2s) beam animations.
+**Accessibility:** All animations respect `prefers-reduced-motion: reduce` — disables animation immediately.
 
 ## Constraints
 
 - No full-page gradients — depth via multi-layer glass + shadow system only.
-- Gold accent used ultra-sparingly: CTAs, hero highlights, footer accents, hover states. Never fill surfaces.
-- All text meets AAA contrast (0.96 L foreground on 0.10 L background = 18:1 ratio).
-- Animations respect accessibility (prefers-reduced-motion disables all).
-- Use semantic color tokens exclusively — never raw hex or arbitrary colors.
+- Gold accent used sparingly: CTAs, hero highlights, footer accents, hover states. Never fill card surfaces.
+- All text meets AAA contrast: 0.96 L foreground on 0.10 L background = 18:1 ratio minimum.
+- Animations respect accessibility via prefers-reduced-motion media query.
+- Use semantic color tokens exclusively — never raw hex or arbitrary Tailwind colors.
+- Custom cursor scoped to fine-pointer devices only; does not interfere with scrolling.
 
 ## Signature Detail
 
-Multi-layer glass architecture with inset gold glows, 6-tier shadow hierarchy, and serif accent typography create instant recognition as world-class digital product. Museum-quality color precision (OKLCH 0.10 L background) + choreographed motion orchestration signal cutting-edge agency expertise.
+Multi-layer glass + inset gold glows, 6-tier shadow system, purple→blue gradient accents, 3D card tilt with spotlight beams, interactive cursor ring animation, and staggered motion choreography create instantly recognizable premium brand. Museum-black OKLCH foundation + serif accent typography signal editorial sophistication and cutting-edge digital expertise.
+
+## Quality Benchmarks
+
+Linear, Stripe, Notion, Vercel, Apple. Tight visual system: 2 font families, 5 core OKLCH colors, 4 type tiers, one dominant interaction pattern (3D card tilt + spotlight). Desktop-first responsive, seamless dark mode throughout.

@@ -1,26 +1,29 @@
 {
-  "overview": "A premium multi-page website for Aura Web Design, a digital agency offering custom websites, e-commerce solutions, and business growth services. Features a dark luxury aesthetic with gold accents, glassmorphism cards, and smooth animations across 5 pages.",
+  "overview": "flowebdesign is a premium full-stack SaaS web application for a web development agency. Features a high-converting marketing site with 6 pages, Internet Identity authentication, Motoko backend for contact lead storage, and an admin dashboard for managing client inquiries.",
   "features": [
-    "Dark luxury theme with black background and gold (#D4AF37) accents",
-    "5 fully responsive pages: Home, Services, Portfolio, Pricing, Contact",
-    "Glassmorphism card styling throughout",
-    "Scroll-triggered fade and zoom animations",
-    "Fixed navbar with mobile hamburger menu",
-    "Floating WhatsApp contact button",
-    "Clickable phone and Instagram contact links",
-    "3-tier pricing display with highlighted Standard plan",
-    "6-item portfolio grid with hover zoom effects",
-    "Contact form with email submission"
+    "Premium dark glassmorphism design with purple-blue-cyan gradients",
+    "Hero section with high-impact headline and CTAs",
+    "Services showcase (Frontend, Backend, Full-Stack) with detail cards",
+    "Interactive portfolio with hover effects and case study metrics",
+    "Contact form wired to Motoko canister for persistent lead storage",
+    "Internet Identity authentication for admin access",
+    "Protected admin dashboard with contact leads table and stats",
+    "Dynamic navbar with login/logout auth state",
+    "Smooth Framer Motion animations and scroll effects",
+    "Floating WhatsApp button for instant client contact",
+    "Mobile-first responsive design",
+    "Sticky glassmorphism navbar"
   ],
-  "category": "business",
+  "category": "business-agency",
   "tags": [
     "agency",
+    "saas",
     "portfolio",
     "dark-theme",
-    "luxury",
     "glassmorphism",
-    "multi-page",
-    "web-design"
+    "dashboard",
+    "authentication",
+    "web-development"
   ],
-  "last_updated": "2026-04-10T10:26:33.049Z"
+  "last_updated": "2026-04-17T04:29:00.462Z"
 }

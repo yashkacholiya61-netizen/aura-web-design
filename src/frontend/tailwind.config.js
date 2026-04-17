@@ -83,12 +83,17 @@ export default {
         sm: "0 2px 4px 0 rgba(0, 0, 0, 0.12)",
         md: "0 4px 8px -1px rgba(0, 0, 0, 0.22), 0 2px 4px -1px rgba(0, 0, 0, 0.12)",
         lg: "0 10px 20px -3px rgba(0, 0, 0, 0.3), 0 4px 8px -2px rgba(0, 0, 0, 0.15)",
-        elevated: "0 20px 40px -5px rgba(0, 0, 0, 0.45), 0 0 1px rgba(212, 175, 55, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
-        premium: "0 30px 60px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(212, 175, 55, 0.06)",
+        elevated: "0 20px 40px -5px rgba(0, 0, 0, 0.45), 0 0 1px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+        premium: "0 30px 60px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(124, 58, 237, 0.08)",
+        subtle: "0 1px 3px 0 rgba(0,0,0,0.2)",
+        purple: "0 4px 24px rgba(124, 58, 237, 0.3), 0 0 48px rgba(124, 58, 237, 0.1)",
+        "purple-sm": "0 2px 12px rgba(124, 58, 237, 0.2)",
+        "purple-strong": "0 0 40px rgba(124, 58, 237, 0.45), 0 0 80px rgba(59, 130, 246, 0.2)",
+        blue: "0 4px 24px rgba(59, 130, 246, 0.25)",
         gold: "0 4px 24px rgba(212, 175, 55, 0.25), 0 0 48px rgba(212, 175, 55, 0.08)",
         "gold-sm": "0 2px 12px rgba(212, 175, 55, 0.18)",
         "gold-strong": "0 0 40px rgba(212, 175, 55, 0.35), 0 0 80px rgba(212, 175, 55, 0.12)",
-        inset: "inset 0 1px 2px 0 rgba(212, 175, 55, 0.06)",
+        inset: "inset 0 1px 2px 0 rgba(124, 58, 237, 0.08)",
       },
       keyframes: {
         "accordion-down": {
@@ -108,8 +113,8 @@ export default {
           "50%": { transform: "translateY(-8px) rotate(1deg)" },
         },
         "glow-pulse": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(212, 175, 55, 0.15)" },
-          "50%": { boxShadow: "0 0 50px rgba(212, 175, 55, 0.40)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(124, 58, 237, 0.2)" },
+          "50%": { boxShadow: "0 0 50px rgba(124, 58, 237, 0.5), 0 0 80px rgba(59, 130, 246, 0.2)" },
         },
         shimmer: {
           "0%": { backgroundPosition: "-400% 0" },
@@ -132,6 +137,39 @@ export default {
           "70%": { transform: "scale(1.6)", opacity: "0" },
           "100%": { transform: "scale(1.6)", opacity: "0" },
         },
+        "gradient-shift": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        spotlight: {
+          "0%": { opacity: "0", transform: "translate(-72%, -62%) scale(0.5)" },
+          "100%": { opacity: "1", transform: "translate(-50%, -40%) scale(1)" },
+        },
+        "counter-up": {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "spotlight-move": {
+          "0%": { transform: "translate(-40%, -40%)" },
+          "50%": { transform: "translate(-50%, -50%)" },
+          "100%": { transform: "translate(-60%, -60%)" },
+        },
+        "cursor-ring": {
+          "0%": { boxShadow: "0 0 0 0 rgba(124,58,237,0.7), 0 0 0 8px rgba(59,130,246,0.4)" },
+          "100%": { boxShadow: "0 0 0 8px rgba(124,58,237,0), 0 0 0 20px rgba(59,130,246,0)" },
+        },
+        "slide-in-right": {
+          from: { opacity: "0", transform: "translateX(24px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        "blur-in": {
+          "0%": { opacity: "0", filter: "blur(8px)" },
+          "100%": { opacity: "1", filter: "blur(0)" },
+        },
+        "tilt-in": {
+          "0%": { opacity: "0", transform: "perspective(800px) rotateX(10deg) translateY(20px)" },
+          "100%": { opacity: "1", transform: "perspective(800px) rotateX(0deg) translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -144,6 +182,14 @@ export default {
         "scale-in": "scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
         "nav-item-in": "nav-item-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both",
         "pulse-ring": "pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "gradient-shift": "gradient-shift 4s ease infinite",
+        spotlight: "spotlight 2s ease forwards",
+        "counter-up": "counter-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) both",
+        "spotlight-move": "spotlight-move 2s ease-in-out infinite",
+        "cursor-ring": "cursor-ring 1.5s ease-out infinite",
+        "slide-in-right": "slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+        "blur-in": "blur-in 0.5s ease-out",
+        "tilt-in": "tilt-in 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },

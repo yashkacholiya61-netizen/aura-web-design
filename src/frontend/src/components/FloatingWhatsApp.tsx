@@ -15,7 +15,7 @@ export default function FloatingWhatsApp() {
           "0 6px 24px rgba(37, 211, 102, 0.40), 0 0 0 1px rgba(37, 211, 102, 0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
       }}
     >
-      {/* Pulse ring 1 */}
+      {/* Pulse ring 1 — pointer-events:none to avoid blocking interactions */}
       <span
         className="absolute inset-0 rounded-full animate-pulse-ring pointer-events-none"
         style={{ background: "rgba(37, 211, 102, 0.35)" }}

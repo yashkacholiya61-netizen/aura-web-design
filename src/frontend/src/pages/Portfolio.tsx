@@ -1,512 +1,450 @@
 import {
   useScrollAnimation,
   useStaggerAnimation,
+  useTiltEffect,
 } from "@/hooks/useScrollAnimation";
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CheckCircle2,
+  ExternalLink,
+  Layers,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
-/* ─── Types ─────────────────────────────────────────────────────── */
-interface Project {
+/* ─── Types ─────────────────────────────────────── */
+type FilterCategory =
+  | "All"
+  | "Web Design"
+  | "Development"
+  | "E-Commerce"
+  | "Full-Stack";
+
+interface PortfolioItem {
   id: number;
   title: string;
-  subtitle: string;
+  category: Exclude<FilterCategory, "All">;
   description: string;
-  category: string;
   tags: string[];
-  image: string;
-  featured: boolean;
-  year: string;
+  gradient: string;
+  accentColor: string;
 }
 
-/* ─── Data ─────────────────────────────────────────────────────── */
-const PROJECTS: Project[] = [
+interface CaseStudy {
+  id: number;
+  title: string;
+  challenge: string;
+  solution: string;
+  results: { label: string; value: string }[];
+  gradient: string;
+  icon: React.ElementType;
+}
+
+/* ─── Data ──────────────────────────────────────── */
+
+const FILTER_CATEGORIES: FilterCategory[] = [
+  "All",
+  "Web Design",
+  "Development",
+  "E-Commerce",
+  "Full-Stack",
+];
+
+const PROJECTS: PortfolioItem[] = [
   {
     id: 1,
-    title: "LuxBrand Agency",
-    subtitle: "Editorial Fashion Identity",
-    description:
-      "Premium fashion brand website with editorial aesthetic and immersive full-screen product showcase.",
-    category: "Websites",
-    tags: ["Fashion", "Editorial", "CMS"],
-    image: "/assets/generated/portfolio-luxbrand.dim_800x600.jpg",
-    featured: true,
-    year: "2024",
+    title: "ShopEasy",
+    category: "E-Commerce",
+    description: "Modern online store with 300% conversion boost",
+    tags: ["React", "Node.js", "MongoDB"],
+    gradient: "linear-gradient(135deg, #7c3aed44 0%, #3b82f644 100%)",
+    accentColor: "#7c3aed",
   },
   {
     id: 2,
-    title: "Elegance Store",
-    subtitle: "Luxury Jewellery Platform",
-    description:
-      "High-end jewellery e-commerce with seamless checkout, AR try-on previews, and product management.",
-    category: "E-Commerce",
-    tags: ["E-Commerce", "Jewellery", "AR"],
-    image: "/assets/generated/portfolio-elegance.dim_800x600.jpg",
-    featured: false,
-    year: "2024",
+    title: "DataVault SaaS",
+    category: "Full-Stack",
+    description: "Analytics SaaS serving 10k+ users",
+    tags: ["React", "Python", "PostgreSQL"],
+    gradient: "linear-gradient(135deg, #0ea5e944 0%, #6366f144 100%)",
+    accentColor: "#0ea5e9",
   },
   {
     id: 3,
-    title: "Saveur Dining",
-    subtitle: "Michelin-Star Hospitality",
-    description:
-      "Upscale restaurant experience with real-time reservation system and interactive tasting menus.",
-    category: "Websites",
-    tags: ["Restaurant", "Booking", "UX"],
-    image: "/assets/generated/portfolio-saveur.dim_800x600.jpg",
-    featured: false,
-    year: "2023",
+    title: "LuxeStyle",
+    category: "Web Design",
+    description: "Premium fashion brand website",
+    tags: ["HTML", "CSS", "Animations"],
+    gradient: "linear-gradient(135deg, #ec489944 0%, #8b5cf644 100%)",
+    accentColor: "#ec4899",
   },
   {
     id: 4,
-    title: "NovaCinema AI",
-    subtitle: "AI Video Generation Platform",
-    description:
-      "Cutting-edge AI video generation SaaS — text-to-video, neural style transfer, and cinematic exports.",
-    category: "AI Video",
-    tags: ["AI", "Video", "SaaS"],
-    image: "/assets/generated/portfolio-aivideo.dim_800x600.jpg",
-    featured: false,
-    year: "2024",
+    title: "TechCorpSite",
+    category: "Web Design",
+    description: "Corporate rebrand driving 250% more leads",
+    tags: ["React", "Tailwind"],
+    gradient: "linear-gradient(135deg, #8b5cf644 0%, #3b82f644 100%)",
+    accentColor: "#8b5cf6",
   },
   {
     id: 5,
-    title: "Harbour Realty",
-    subtitle: "Ultra-Luxury Real Estate",
-    description:
-      "Luxury real estate portal with advanced property search, virtual tours, and CRM integration.",
-    category: "Websites",
-    tags: ["Real Estate", "Portal", "3D"],
-    image: "/assets/generated/portfolio-harbour.dim_800x600.jpg",
-    featured: false,
-    year: "2024",
+    title: "QuickPay API",
+    category: "Development",
+    description: "Payment gateway integration system",
+    tags: ["Node.js", "Express", "Stripe"],
+    gradient: "linear-gradient(135deg, #10b98144 0%, #06b6d444 100%)",
+    accentColor: "#10b981",
   },
   {
     id: 6,
-    title: "Meridian Legal",
-    subtitle: "Corporate Law Presence",
-    description:
-      "Authoritative law firm digital presence with client intake, case management, and trust signals.",
-    category: "Branding",
-    tags: ["Legal", "Corporate", "Trust"],
-    image: "/assets/generated/portfolio-meridian.dim_800x600.jpg",
-    featured: false,
-    year: "2023",
+    title: "FoodieHub",
+    category: "E-Commerce",
+    description: "Restaurant ordering platform",
+    tags: ["React", "Firebase"],
+    gradient: "linear-gradient(135deg, #f9731644 0%, #f59e0b44 100%)",
+    accentColor: "#f97316",
+  },
+  {
+    id: 7,
+    title: "TaskFlow App",
+    category: "Full-Stack",
+    description: "Project management tool for remote teams",
+    tags: ["React", "Node.js"],
+    gradient: "linear-gradient(135deg, #6366f144 0%, #3b82f644 100%)",
+    accentColor: "#6366f1",
+  },
+  {
+    id: 8,
+    title: "MediCare Portal",
+    category: "Development",
+    description: "Healthcare appointment system",
+    tags: ["React", "PostgreSQL"],
+    gradient: "linear-gradient(135deg, #14b8a644 0%, #0ea5e944 100%)",
+    accentColor: "#14b8a6",
+  },
+  {
+    id: 9,
+    title: "GreenEnergy Site",
+    category: "Web Design",
+    description: "Sustainability brand with immersive storytelling",
+    tags: ["React", "GSAP"],
+    gradient: "linear-gradient(135deg, #22c55e44 0%, #16a34a44 100%)",
+    accentColor: "#22c55e",
+  },
+  {
+    id: 10,
+    title: "StartupLaunch",
+    category: "Full-Stack",
+    description: "SaaS startup MVP in 4 weeks",
+    tags: ["React", "Supabase"],
+    gradient: "linear-gradient(135deg, #a855f744 0%, #7c3aed44 100%)",
+    accentColor: "#a855f7",
+  },
+  {
+    id: 11,
+    title: "RealEstate Pro",
+    category: "Full-Stack",
+    description: "Property listing platform with virtual tours",
+    tags: ["React", "Node.js"],
+    gradient: "linear-gradient(135deg, #f59e0b44 0%, #ef444444 100%)",
+    accentColor: "#f59e0b",
+  },
+  {
+    id: 12,
+    title: "EventFlow",
+    category: "Development",
+    description: "Event management platform with real-time updates",
+    tags: ["React", "WebSockets"],
+    gradient: "linear-gradient(135deg, #ec489944 0%, #f9731644 100%)",
+    accentColor: "#ec4899",
   },
 ];
 
-type Category = "All" | "Websites" | "E-Commerce" | "Branding" | "AI Video";
-const CATEGORIES: Category[] = [
-  "All",
-  "Websites",
-  "E-Commerce",
-  "Branding",
-  "AI Video",
+const CASE_STUDIES: CaseStudy[] = [
+  {
+    id: 1,
+    title: "ShopEasy E-Commerce",
+    challenge:
+      "Low conversion rates and an outdated, friction-heavy design that was costing the client customers at every funnel stage.",
+    solution:
+      "Full UX overhaul with redesigned checkout flow, mobile-first responsive build, and performance optimisation reducing load time by 68%.",
+    results: [
+      { label: "Conversion Increase", value: "300%" },
+      { label: "Revenue Growth", value: "180%" },
+      { label: "Load Time Cut", value: "68%" },
+    ],
+    gradient: "135deg, rgba(124,58,237,0.18) 0%, rgba(59,130,246,0.12) 100%",
+    icon: TrendingUp,
+  },
+  {
+    id: 2,
+    title: "DataVault SaaS",
+    challenge:
+      "Client needed a scalable real-time analytics platform to compete with enterprise tools — on a startup budget and timeline.",
+    solution:
+      "Custom multi-tenant SaaS with real-time dashboards, role-based access control, and auto-scaling infrastructure ready for Series A.",
+    results: [
+      { label: "Active Users", value: "10,000+" },
+      { label: "Data Processed", value: "2TB/day" },
+      { label: "Round", value: "Series A" },
+    ],
+    gradient: "135deg, rgba(14,165,233,0.18) 0%, rgba(99,102,241,0.12) 100%",
+    icon: Zap,
+  },
+  {
+    id: 3,
+    title: "TechCorpSite Rebrand",
+    challenge:
+      "Poor brand perception and minimal online presence meant the client was losing enterprise deals before the first call.",
+    solution:
+      "Complete digital rebrand — new visual identity, content strategy, technical SEO overhaul, and conversion-optimised site.",
+    results: [
+      { label: "Qualified Leads", value: "+250%" },
+      { label: "Organic Traffic", value: "+190%" },
+      { label: "Bounce Drop", value: "42%" },
+    ],
+    gradient: "135deg, rgba(139,92,246,0.18) 0%, rgba(59,130,246,0.12) 100%",
+    icon: Layers,
+  },
 ];
 
-/* ─── Sub-components ────────────────────────────────────────────── */
-function HeroSection() {
-  const { ref, isVisible } = useScrollAnimation<HTMLDivElement>({
-    threshold: 0.1,
-  });
+/* ─── Sub-components ──────────────────────────────── */
+
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: PortfolioItem;
+  index: number;
+}) {
+  const { ref, tiltStyle, onMouseMove, onMouseLeave } = useTiltEffect(8);
 
   return (
-    <section
-      className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden"
-      data-ocid="portfolio-hero"
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 28, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -16, scale: 0.95 }}
+      transition={{
+        duration: 0.45,
+        delay: index * 0.055,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={tiltStyle}
+      data-ocid={`portfolio.item.${index + 1}`}
+      className="group relative rounded-2xl overflow-hidden glass-card cursor-pointer spotlight-card flex flex-col"
     >
-      {/* Background decorations */}
+      {/* Gradient image panel */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 50% -10%, oklch(0.18 0.04 70 / 0.12) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 60%, oklch(0.72 0.15 70 / 0.04) 0%, transparent 60%)",
-        }}
-      />
-      {/* Decorative grid lines */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(212,175,55,1) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,1) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
-
-      <div
-        ref={ref}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        className="relative h-48 flex items-end p-5 overflow-hidden"
+        style={{ background: project.gradient }}
       >
+        {/* Mesh grid */}
         <div
-          className={`text-center transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: `linear-gradient(${project.accentColor} 1px, transparent 1px), linear-gradient(90deg, ${project.accentColor} 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+        {/* Center glow orb */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 60% 60% at 50% 40%, ${project.accentColor}40, transparent 70%)`,
+          }}
+        />
+        {/* Hover overlay */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${project.accentColor}55, transparent 65%)`,
+          }}
+        />
+        {/* Category badge */}
+        <span
+          className="relative z-10 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold glass"
+          style={{
+            border: `1px solid ${project.accentColor}40`,
+            color: project.accentColor,
+          }}
         >
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 mb-6">
-            <span className="h-px w-8 bg-primary/50" />
-            <span className="text-primary text-xs font-body font-semibold tracking-[0.35em] uppercase">
-              Selected Work
-            </span>
-            <span className="h-px w-8 bg-primary/50" />
-          </div>
+          {project.category}
+        </span>
+      </div>
 
-          {/* Headline */}
-          <h1 className="leading-none mb-6">
-            <span className="block font-display font-light text-5xl sm:text-7xl lg:text-8xl text-foreground/90 tracking-tight">
-              Our
-            </span>
+      {/* Card body */}
+      <div className="flex flex-col gap-3 p-5 flex-1">
+        <h3 className="font-display font-bold text-lg text-foreground group-hover:gradient-text transition-all duration-300">
+          {project.title}
+        </h3>
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+          {project.description}
+        </p>
+
+        {/* Tech tags */}
+        <div className="flex flex-wrap gap-1.5 mt-auto">
+          {project.tags.map((tag) => (
             <span
-              className="block accent-serif text-6xl sm:text-8xl lg:text-[7.5rem] text-primary leading-none"
-              style={{ letterSpacing: "-0.02em" }}
+              key={tag}
+              className="px-2 py-0.5 rounded-md text-xs font-mono"
+              style={{
+                background: `${project.accentColor}14`,
+                border: `1px solid ${project.accentColor}28`,
+                color: project.accentColor,
+              }}
             >
-              Work
+              {tag}
             </span>
-          </h1>
-
-          {/* Tagline */}
-          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-xl mx-auto leading-relaxed mb-10">
-            Crafting digital experiences that inspire, convert,
-            <br className="hidden sm:block" /> and endure.
-          </p>
-
-          {/* Stats */}
-          <div className="inline-flex items-center gap-8 sm:gap-12 px-8 py-4 glass rounded-2xl gold-border-subtle">
-            {[
-              { value: "48+", label: "Projects" },
-              { value: "100%", label: "Satisfaction" },
-              { value: "5★", label: "Rating" },
-            ].map(({ value, label }) => (
-              <div key={label} className="text-center">
-                <div className="font-display font-bold text-xl sm:text-2xl text-primary">
-                  {value}
-                </div>
-                <div className="text-muted-foreground text-[11px] font-body tracking-widest uppercase mt-0.5">
-                  {label}
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
 
-        {/* Decorative floating orb */}
-        <div
-          className="absolute top-1/2 left-8 -translate-y-1/2 w-48 h-48 rounded-full opacity-[0.06] pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle, oklch(0.72 0.15 70) 0%, transparent 70%)",
-            animation: "floatSlow 6s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute top-1/3 right-12 w-32 h-32 rounded-full opacity-[0.05] pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle, oklch(0.72 0.15 70) 0%, transparent 70%)",
-            animation: "floatSlow 8s ease-in-out infinite 2s",
-          }}
-        />
+        {/* View details */}
+        <Link
+          to="/contact"
+          data-ocid={`portfolio.view_details_button.${index + 1}`}
+          className="mt-3 inline-flex items-center gap-2 text-sm font-semibold btn-gradient-outline px-4 py-2.5 rounded-xl w-fit group/btn"
+        >
+          View Details
+          <ExternalLink
+            size={13}
+            className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200"
+          />
+        </Link>
       </div>
-    </section>
+
+      {/* Hover glow border */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none border border-transparent group-hover:border-purple-500/25 transition-colors duration-400" />
+    </motion.div>
   );
 }
 
-function FilterBar({
-  active,
-  onChange,
-}: { active: Category; onChange: (c: Category) => void }) {
+function CaseStudyCard({
+  cs,
+  index,
+}: {
+  cs: CaseStudy;
+  index: number;
+}) {
   const { ref, isVisible } = useScrollAnimation<HTMLDivElement>({
-    threshold: 0.2,
+    threshold: 0.1,
   });
+  const Icon = cs.icon;
 
   return (
     <div
       ref={ref}
-      className={`flex flex-wrap gap-2.5 justify-center px-4 pb-12 transition-all duration-700 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
-      data-ocid="portfolio-filters"
+      data-ocid={`case_study.item.${index + 1}`}
+      className="relative rounded-3xl overflow-hidden flex flex-col transition-all duration-700"
+      style={{
+        transitionDelay: `${index * 0.15}s`,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0)" : "translateY(32px)",
+        background: `linear-gradient(${cs.gradient})`,
+        border: "1px solid rgba(124,58,237,0.18)",
+        boxShadow:
+          "0 20px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
+      }}
     >
-      {CATEGORIES.map((cat, i) => (
-        <button
-          type="button"
-          key={cat}
-          data-ocid={`filter-${cat.toLowerCase().replace(/\s/g, "-")}`}
-          onClick={() => onChange(cat)}
-          style={{
-            transitionDelay: `${i * 50}ms`,
-            boxShadow:
-              active === cat
-                ? "0 0 24px rgba(212,175,55,0.35), 0 4px 12px rgba(0,0,0,0.3)"
-                : undefined,
-          }}
-          className={`relative px-5 py-2 rounded-full text-sm font-body font-medium tracking-wide transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
-            active === cat
-              ? "bg-primary text-primary-foreground shadow-lg"
-              : "glass text-muted-foreground hover:text-foreground hover:border-primary/20 border border-transparent"
-          }`}
-        >
-          {active === cat && (
-            <span
-              className="absolute inset-0 rounded-full opacity-20"
-              style={{
-                background:
-                  "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.5), transparent 70%)",
-              }}
-            />
-          )}
-          {cat}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function FeaturedCard({
-  project,
-  visible,
-}: { project: Project; visible: boolean }) {
-  return (
-    <div
-      data-ocid="portfolio-featured"
-      className={`group relative col-span-1 md:col-span-2 rounded-3xl overflow-hidden cursor-pointer transition-all duration-700 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
-      style={{ aspectRatio: "16/7" }}
-    >
-      {/* Image */}
-      <img
-        src={project.image}
-        alt={project.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-
-      {/* Gradient overlay */}
+      {/* Accent top bar */}
       <div
-        className="absolute inset-0 transition-opacity duration-500"
+        className="h-1 w-full"
         style={{
-          background:
-            "linear-gradient(120deg, rgba(8,8,12,0.88) 0%, rgba(8,8,12,0.5) 50%, rgba(8,8,12,0.2) 100%)",
-        }}
-      />
-      {/* Gold glow on hover */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.10) 0%, transparent 60%)",
+          background: `linear-gradient(90deg, transparent, ${cs.icon === TrendingUp ? "#7c3aed" : cs.icon === Zap ? "#0ea5e9" : "#8b5cf6"}, transparent)`,
         }}
       />
 
-      {/* Content */}
-      <div className="absolute inset-0 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span className="text-primary text-[11px] font-body font-bold tracking-[0.25em] uppercase">
-              Featured Project
-            </span>
-          </div>
-          <span className="text-muted-foreground text-xs font-mono">
-            {project.year}
-          </span>
-        </div>
-
-        <div>
-          <div className="mb-2">
-            <span className="text-xs font-body font-semibold tracking-widest uppercase px-3 py-1 rounded-full glass gold-border-subtle text-primary">
-              {project.category}
-            </span>
-          </div>
-          <h2
-            className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-3 leading-tight group-hover:text-primary transition-colors duration-300"
-            style={{ maxWidth: "640px" }}
+      <div className="p-7 flex flex-col gap-6 flex-1">
+        {/* Header */}
+        <div className="flex items-start gap-4">
+          <div
+            className="p-3 rounded-xl flex-shrink-0"
+            style={{
+              background: "rgba(255,255,255,0.07)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
           >
-            {project.title}
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-lg leading-relaxed mb-5 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-400">
-            {project.description}
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 btn-gold-outline px-5 py-2.5 rounded-full text-sm font-body font-semibold group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300">
-              View Case Study
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-            </div>
+            <Icon size={20} className="text-foreground/80" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="font-display font-bold text-lg text-foreground leading-tight">
+              {cs.title}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5 uppercase tracking-widest">
+              Case Study
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Gold border on hover */}
-      <div className="absolute inset-0 rounded-3xl border border-transparent group-hover:border-primary/20 transition-colors duration-500 pointer-events-none" />
-    </div>
-  );
-}
-
-function PortfolioCard({
-  project,
-  visible,
-}: {
-  project: Project;
-  visible: boolean;
-}) {
-  return (
-    <div
-      data-ocid={`portfolio-card-${project.id}`}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-600 ${
-        visible
-          ? "opacity-100 translate-y-0 scale-100"
-          : "opacity-0 translate-y-8 scale-95"
-      }`}
-      style={{ aspectRatio: "4/3" }}
-    >
-      {/* Image */}
-      <img
-        src={project.image}
-        alt={project.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-600 group-hover:scale-108"
-        style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
-      />
-
-      {/* Base gradient */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(8,8,12,0.85) 0%, rgba(8,8,12,0.2) 50%, transparent 100%)",
-        }}
-      />
-
-      {/* Hover overlay */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 100%, rgba(212,175,55,0.12) 0%, transparent 60%)",
-        }}
-      />
-
-      {/* Top badges */}
-      <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-        <span className="text-[10px] font-body font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full glass gold-border-subtle text-primary">
-          {project.category}
-        </span>
-        <span className="text-[10px] font-mono text-muted-foreground glass px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {project.year}
-        </span>
-      </div>
-
-      {/* Bottom content */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <div className="transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-          <p className="text-muted-foreground text-[11px] font-body font-medium tracking-wider uppercase mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            {project.subtitle}
-          </p>
-          <div className="flex items-end justify-between gap-3">
-            <h3 className="font-display font-bold text-lg sm:text-xl text-foreground group-hover:text-primary transition-colors duration-300 leading-tight min-w-0">
-              {project.title}
-            </h3>
-            <div className="flex-shrink-0 w-9 h-9 rounded-full glass-elevated flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300 gold-border-subtle">
-              <ArrowUpRight className="w-4 h-4 text-primary" />
-            </div>
+        {/* Challenge / Solution */}
+        <div className="space-y-3 flex-1">
+          <div className="glass rounded-xl p-4">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-purple-400 mb-1.5">
+              Challenge
+            </p>
+            <p className="text-sm text-foreground/80 leading-relaxed">
+              {cs.challenge}
+            </p>
           </div>
-          {/* Tags */}
-          <div className="flex gap-1.5 mt-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[9px] font-body font-semibold tracking-wider uppercase text-muted-foreground/70"
+          <div className="glass rounded-xl p-4">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-400 mb-1.5">
+              Solution
+            </p>
+            <p className="text-sm text-foreground/80 leading-relaxed">
+              {cs.solution}
+            </p>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">
+            Results
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {cs.results.map((r) => (
+              <div
+                key={r.label}
+                className="rounded-xl p-3 text-center"
+                style={{
+                  background: "rgba(0,0,0,0.28)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
               >
-                #{tag}
-              </span>
+                <p className="stat-number text-lg font-bold leading-none mb-1">
+                  {r.value}
+                </p>
+                <p className="text-[10px] text-muted-foreground leading-tight">
+                  {r.label}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Border on hover */}
-      <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-primary/15 transition-colors duration-400 pointer-events-none" />
     </div>
   );
 }
 
-function CtaSection() {
-  const { ref, isVisible } = useScrollAnimation<HTMLDivElement>({
-    threshold: 0.3,
-  });
-
-  return (
-    <section className="py-24 lg:py-32" data-ocid="portfolio-cta">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          ref={ref}
-          className={`relative overflow-hidden rounded-3xl px-8 py-16 sm:px-12 sm:py-20 lg:px-20 text-center transition-all duration-900 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(8,8,12,0.95) 40%, rgba(212,175,55,0.04) 100%)",
-            border: "1px solid rgba(212,175,55,0.15)",
-            boxShadow:
-              "0 40px 80px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)",
-          }}
-        >
-          {/* Background glow */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 60% 60% at 50% 100%, rgba(212,175,55,0.08) 0%, transparent 70%)",
-            }}
-          />
-
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 mb-6">
-              <span className="h-px w-6 bg-primary/50" />
-              <span className="text-primary text-xs font-body font-semibold tracking-[0.3em] uppercase">
-                Start a Project
-              </span>
-              <span className="h-px w-6 bg-primary/50" />
-            </div>
-
-            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-4 leading-tight">
-              Have a project{" "}
-              <span className="accent-serif text-primary">in mind?</span>
-            </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-lg mx-auto mb-10 leading-relaxed">
-              Let's build something extraordinary together. Every great brand
-              starts with a conversation.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                to="/contact"
-                data-ocid="portfolio-cta-primary"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-body font-semibold text-sm tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.45)]"
-              >
-                Let's Talk
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-              <a
-                href="https://wa.me/qr/BS4OWTEP5442E1"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-ocid="portfolio-cta-whatsapp"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full btn-gold-outline font-body font-semibold text-sm tracking-wide"
-              >
-                WhatsApp Us
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Main Page ─────────────────────────────────────────────────── */
+/* ─── Page ───────────────────────────────────────── */
 export default function Portfolio() {
-  const [activeFilter, setActiveFilter] = useState<Category>("All");
-  const { containerRef, visibleItems } = useStaggerAnimation<HTMLDivElement>(
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("All");
+
+  const { ref: heroRef, isVisible: heroVisible } =
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  const { ref: caseRef, isVisible: caseVisible } =
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.05 });
+  const { ref: ctaRef, isVisible: ctaVisible } =
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const { containerRef } = useStaggerAnimation<HTMLDivElement>(
     PROJECTS.length,
     { threshold: 0.05 },
   );
@@ -516,48 +454,278 @@ export default function Portfolio() {
       ? PROJECTS
       : PROJECTS.filter((p) => p.category === activeFilter);
 
-  const featuredProject =
-    filteredProjects.find((p) => p.featured) ?? filteredProjects[0];
-  const gridProjects = filteredProjects.filter((p) => p !== featuredProject);
-
   return (
-    <>
-      <HeroSection />
-      <FilterBar active={activeFilter} onChange={setActiveFilter} />
+    <div data-ocid="portfolio.page" className="min-h-screen">
+      {/* ── Hero ─────────────────────────────────────── */}
+      <section
+        className="relative overflow-hidden pt-32 pb-20"
+        style={{
+          background:
+            "radial-gradient(ellipse 100% 70% at 50% -10%, rgba(124,58,237,0.22) 0%, transparent 65%), #0a0a14",
+        }}
+        data-ocid="portfolio.section"
+      >
+        {/* Hero bg image */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "url('/assets/generated/portfolio-hero-bg.dim_1920x600.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+          }}
+        />
+        {/* Floating orbs */}
+        <div
+          className="absolute top-20 left-1/4 w-80 h-80 rounded-full opacity-10 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(124,58,237,1), transparent 70%)",
+            filter: "blur(56px)",
+            animation: "floatSlow 7s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="absolute bottom-8 right-1/4 w-60 h-60 rounded-full opacity-08 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(59,130,246,1), transparent 70%)",
+            filter: "blur(44px)",
+            animation: "floatSlow 9s ease-in-out infinite 2s",
+          }}
+        />
 
-      {/* Portfolio Grid */}
-      <section className="pb-8 lg:pb-12" data-ocid="portfolio-grid">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={containerRef}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5"
+        <div
+          ref={heroRef}
+          className="relative z-10 max-w-4xl mx-auto px-6 text-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={heroVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Featured — spans 2 cols when visible */}
-            {featuredProject && (
-              <FeaturedCard
-                project={featuredProject}
-                visible={visibleItems[0] ?? false}
-              />
-            )}
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-purple-500/25 mb-7">
+              <CheckCircle2 size={13} className="text-purple-400" />
+              <span className="text-xs font-semibold text-purple-300 uppercase tracking-widest">
+                Our Work
+              </span>
+            </div>
 
-            {/* Remaining grid */}
-            {gridProjects.map((project, i) => (
-              <PortfolioCard
-                key={project.id}
-                project={project}
-                visible={visibleItems[i + 1] ?? false}
-              />
+            <h1 className="font-display font-extrabold text-5xl sm:text-7xl leading-[1.05] mb-5 text-foreground">
+              Our <span className="gradient-text-animate">Portfolio</span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Projects that prove what we can do for your business
+            </p>
+
+            {/* Stats strip */}
+            <div className="mt-10 inline-flex items-center gap-8 sm:gap-12 px-8 py-4 glass-card rounded-2xl">
+              {[
+                { value: "12+", label: "Projects Shown" },
+                { value: "50+", label: "Happy Clients" },
+                { value: "5★", label: "Avg Rating" },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <p className="stat-number text-2xl font-bold">{stat.value}</p>
+                  <p className="text-[11px] text-muted-foreground tracking-widest uppercase mt-0.5">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Filter Tabs ──────────────────────────────── */}
+      <section
+        className="section-alt py-6 sticky top-[70px] z-20"
+        data-ocid="portfolio.filter.tab"
+      >
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center gap-2.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
+            {FILTER_CATEGORIES.map((cat, i) => (
+              <button
+                type="button"
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                data-ocid={`portfolio.filter_${cat.toLowerCase().replace(/[\s-]/g, "_")}`}
+                style={{ transitionDelay: `${i * 40}ms` }}
+                className={`flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 ${
+                  activeFilter === cat
+                    ? "text-white shadow-lg shadow-violet-500/25"
+                    : "glass border border-white/10 text-muted-foreground hover:text-foreground hover:border-violet-500/25"
+                }`}
+              >
+                {activeFilter === cat && (
+                  <span
+                    className="absolute inset-0 rounded-xl -z-10"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%)",
+                    }}
+                  />
+                )}
+                <span className="relative z-10">{cat}</span>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Gold divider */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="gold-divider" />
+      {/* ── Project Grid ──────────────────────────────── */}
+      <section className="py-16 px-6" data-ocid="portfolio.grid.section">
+        <div className="max-w-6xl mx-auto">
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={activeFilter}
+              ref={containerRef}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              data-ocid="portfolio.list"
+            >
+              {filteredProjects.map((project, i) => (
+                <ProjectCard key={project.id} project={project} index={i} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {filteredProjects.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="py-24 text-center"
+              data-ocid="portfolio.empty_state"
+            >
+              <p className="text-muted-foreground text-lg">
+                No projects in this category yet.
+              </p>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="gradient-divider" />
       </div>
 
-      <CtaSection />
-    </>
+      {/* ── Case Studies ──────────────────────────────── */}
+      <section className="section-alt py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Section header */}
+          <div
+            ref={caseRef}
+            className="text-center mb-16 transition-all duration-700"
+            style={{
+              opacity: caseVisible ? 1 : 0,
+              transform: caseVisible ? "translateY(0)" : "translateY(28px)",
+            }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-blue-500/25 mb-5">
+              <TrendingUp size={13} className="text-blue-400" />
+              <span className="text-xs font-semibold text-blue-300 uppercase tracking-widest">
+                Deep Dives
+              </span>
+            </div>
+            <h2 className="font-display font-extrabold text-4xl md:text-5xl mb-4 text-foreground">
+              Case <span className="gradient-text">Studies</span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Behind-the-scenes look at how we solve real business problems
+            </p>
+          </div>
+
+          {/* Case study cards */}
+          <div
+            className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+            data-ocid="case_study.list"
+          >
+            {CASE_STUDIES.map((cs, i) => (
+              <CaseStudyCard key={cs.id} cs={cs} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────── */}
+      <section className="py-28 px-6" data-ocid="portfolio.cta.section">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            ref={ctaRef}
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={ctaVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden rounded-3xl text-center px-10 py-16 md:px-16 md:py-20"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(124,58,237,0.13) 0%, rgba(8,8,20,0.96) 40%, rgba(59,130,246,0.10) 100%)",
+              border: "1px solid rgba(124,58,237,0.22)",
+              boxShadow:
+                "0 0 80px rgba(124,58,237,0.10), 0 32px 64px rgba(0,0,0,0.4)",
+            }}
+          >
+            {/* Background glow */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(124,58,237,0.18), transparent 70%)",
+              }}
+            />
+            {/* Grid texture */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-[0.025]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(124,58,237,1) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,1) 1px, transparent 1px)",
+                backgroundSize: "60px 60px",
+              }}
+            />
+
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-purple-500/25 mb-6">
+                <Zap size={13} className="text-purple-400" />
+                <span className="text-xs font-semibold text-purple-300 uppercase tracking-widest">
+                  Start a Project
+                </span>
+              </div>
+
+              <h2 className="font-display font-extrabold text-4xl md:text-5xl text-foreground mb-4 leading-tight">
+                Have a project <span className="gradient-text">in mind?</span>
+              </h2>
+              <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+                Tell us about your vision. We'll turn it into a high-performance
+                digital experience that drives real results.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link
+                  to="/contact"
+                  data-ocid="portfolio.cta.primary_button"
+                  className="inline-flex items-center gap-3 btn-gradient px-8 py-4 rounded-xl text-base font-semibold text-white purple-glow-subtle hover:purple-glow transition-all duration-300 group"
+                >
+                  Let's Talk
+                  <ArrowRight
+                    size={17}
+                    className="group-hover:translate-x-1 transition-transform duration-200"
+                  />
+                </Link>
+                <a
+                  href="https://wa.me/qr/BS4OWTEP5442E1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-ocid="portfolio.cta.secondary_button"
+                  className="inline-flex items-center gap-2 btn-gradient-outline px-8 py-4 rounded-xl font-semibold text-sm tracking-wide"
+                >
+                  WhatsApp Us
+                  <ArrowUpRight size={15} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 }

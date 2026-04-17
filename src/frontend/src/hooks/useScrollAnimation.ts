@@ -53,7 +53,6 @@ export function useStaggerAnimation<T extends Element = HTMLDivElement>(
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // 80ms stagger — snappier than the old 100ms
           Array.from({ length: count }).forEach((_, i) => {
             setTimeout(() => {
               setVisibleItems((prev) => {
@@ -78,11 +77,6 @@ export function useStaggerAnimation<T extends Element = HTMLDivElement>(
 
 /**
  * useParallax — subtle depth scroll effect.
- * Returns a `style` object to spread onto the target element.
- * The element translates on the Y axis proportional to scroll depth.
- *
- * @param speed  Positive = scrolls slower (depth back). Negative = faster (depth forward).
- * @param clamp  Maximum translate distance in px.
  */
 export function useParallax(speed = 0.15, clamp = 60) {
   const [offset, setOffset] = useState(0);
@@ -99,7 +93,6 @@ export function useParallax(speed = 0.15, clamp = 60) {
   }, [speed, clamp]);
 
   useEffect(() => {
-    // Respect reduced-motion preference
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches) return;
 
@@ -120,7 +113,6 @@ export function useParallax(speed = 0.15, clamp = 60) {
 
 /**
  * useScrollProgress — returns 0–1 scroll progress within an element.
- * Useful for progress bars, counters that animate as the section scrolls into view.
  */
 export function useScrollProgress<T extends Element = HTMLDivElement>() {
   const ref = useRef<T>(null);
@@ -143,4 +135,102 @@ export function useScrollProgress<T extends Element = HTMLDivElement>() {
   }, []);
 
   return { ref, progress };
+}
+
+/**
+ * useCounterAnimation — animates a number from 0 to `target`
+ * when the referenced element scrolls into view.
+ */
+export function useCounterAnimation(
+  target: number,
+  duration = 1800,
+  options: UseScrollAnimationOptions = {},
+) {
+  const { threshold = 0.3, rootMargin = "0px" } = options;
+  const ref = useRef<HTMLElement>(null);
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold, rootMargin },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold, rootMargin, started]);
+
+  useEffect(() => {
+    if (!started) return;
+
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      setCount(target);
+      return;
+    }
+
+    const startTime = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - (1 - progress) ** 3;
+      setCount(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    const raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [started, target, duration]);
+
+  return { ref, count };
+}
+
+/**
+ * useTiltEffect — 3D card tilt based on mouse position within element.
+ * Returns event handlers and a style object.
+ */
+export function useTiltEffect(maxTilt = 12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tiltStyle, setTiltStyle] = useState<React.CSSProperties>({});
+
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (mq.matches) return;
+
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const rotateX = -y * maxTilt;
+      const rotateY = x * maxTilt;
+      setTiltStyle({
+        transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
+        transition: "transform 0.1s ease-out",
+        willChange: "transform",
+      });
+    },
+    [maxTilt],
+  );
+
+  const onMouseLeave = useCallback(() => {
+    setTiltStyle({
+      transform:
+        "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)",
+      transition: "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+      willChange: "transform",
+    });
+  }, []);
+
+  return { ref, tiltStyle, onMouseMove, onMouseLeave };
 }
