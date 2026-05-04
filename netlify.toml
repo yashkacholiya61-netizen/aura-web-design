@@ -1,0 +1,4 @@
+[build]
+  base = "."
+  command = "pnpm install --prefer-offline && pnpm --filter @caffeine/template-frontend... run build"
+  publish = "src/frontend/dist"
