@@ -1,27 +1,28 @@
-# Design Brief — flowebdesign
+# Design Brief — flowebdesign (Local Business Edition)
 
 ## Direction
-Luxury digital agency: museum-black OKLCH foundation, vibrant gold accents, purple→blue gradients. Multi-layer glassmorphism, 3D card tilt, choreographed micro-animations. Premium brand language instantly recognizable.
+High-converting agency site for Indian local businesses: deep-space OKLCH foundation, luminous gold CTAs, purple-blue-cyan gradients. Glassmorphism cards, minimal text, conversion-focused hierarchy. Instantly builds trust within 5 seconds.
 
 ## Tone
-Refined luxury + interactive sophistication. Museum-black (0.10 L) foundation, vibrant gold (0.72 L), purple→blue modern accents, multi-layered glass, purposeful motion choreography. Cuts-edge digital expertise + approachable warmth.
+Professional + approachable. Deep-space navy (0.08 L) foundation, vibrant gold (0.72 L), purple→blue→cyan modern accents, clean glass surfaces, purposeful motion. Communicates expertise while remaining accessible to non-tech local business owners.
 
 ## Differentiation
-Premium multi-layer glassmorphism (8% base, 12% elevated opacity with dual blur layers), gold inset glows, purple→blue gradient accents, 3D card tilt with perspective transform, spotlight hover beams, custom gradient cursor ring, serif accent typography (Fraunces) + geometric sans (Space Grotesk). Instantly differentiates from generic tech sites.
+Local-business-first messaging, static CSS browser-mockups showcasing real examples (coaching, gym, cafe), WhatsApp as primary CTA, minimal jargon, benefit-focused copy. Glassmorphism + gold accents signal premium quality. Mobile-first responsive ensures rural/small-town optimization.
 
 ## Color Palette
 
 | Token            | OKLCH         | Role                                    |
 | ---------------- | ------------- | --------------------------------------- |
-| background       | 0.10 0.01 240 | Museum-black luxury foundation          |
+| background       | 0.08 0.01 240 | Deep-space premium foundation           |
 | foreground       | 0.96 0.005 0  | Pure near-white, maximum clarity        |
-| card             | 0.15 0.02 240 | Primary glass layer, subtle elevation   |
-| popover          | 0.18 0.025 240| Secondary glass layer for depth         |
-| primary          | 0.72 0.15 70  | Vibrant warm gold accent                |
-| accent-purple    | 0.65 0.17 310 | Modern purple gradient start            |
-| accent-blue      | 0.58 0.14 255 | Modern blue gradient end                |
-| secondary        | 0.35 0.03 240 | Rich slate for content backgrounds       |
-| muted            | 0.25 0.02 240 | Sophisticated grey for secondary text   |
+| card             | 0.13 0.02 240 | Primary glass layer, elevated contrast  |
+| popover          | 0.16 0.025 240| Secondary glass layer for depth         |
+| primary          | 0.72 0.18 70  | Vibrant warm gold (enhanced saturation) |
+| accent-purple    | 0.65 0.19 310 | Modern purple gradient start            |
+| accent-blue      | 0.58 0.16 255 | Modern blue gradient mid                |
+| accent-cyan      | 0.60 0.14 190 | Modern cyan gradient end                |
+| secondary        | 0.30 0.025 240| Rich slate for sections                 |
+| muted            | 0.22 0.015 240| Subtle grey for secondary text          |
 | success          | 0.68 0.15 140 | Premium emerald accent                  |
 | warning          | 0.75 0.18 60  | Warm amber accent                       |
 
@@ -29,12 +30,12 @@ Premium multi-layer glassmorphism (8% base, 12% elevated opacity with dual blur 
 
 | Font           | Role                                           | Files Staged              |
 |----------------|------------------------------------------------|---------------------------|
-| Space Grotesk  | Headlines, hero text, geometric authority      | SpaceGrotesk.woff2        |
-| DM Sans        | Body copy, UI labels, humanist readability     | DMSans.woff2              |
-| Fraunces       | Testimonials, quotes, luxury serif callouts    | Fraunces.woff2            |
-| Geist Mono     | Code blocks, technical content                 | GeistMono.woff2           |
+| Space Grotesk  | Headlines (hero 6xl-8xl), geometric authority  | SpaceGrotesk.woff2        |
+| DM Sans        | Body copy (base/lg), labels, UI, humanist      | DMSans.woff2              |
+| Fraunces       | Testimonials, quotes, serif callouts italic    | Fraunces.woff2            |
+| Geist Mono     | Code, minimal use in landing context           | GeistMono.woff2           |
 
-Scale: hero `text-7xl md:text-8xl font-bold tracking-tight`, h2 `text-5xl md:text-6xl font-bold`, accent `font-accent italic text-2xl`, label `text-xs font-semibold tracking-widest`, body `text-base md:text-lg leading-relaxed`.
+Scale: hero `text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight`, h2 `text-4xl md:text-5xl font-bold`, h3 `text-xl font-bold`, body `text-base md:text-lg leading-relaxed`, label `text-xs font-semibold tracking-widest`.
 
 ## Elevation & Depth
 
@@ -42,46 +43,49 @@ Scale: hero `text-7xl md:text-8xl font-bold tracking-tight`, h2 `text-5xl md:tex
 
 ## Structural Zones
 
-| Zone    | Background                | Border             | Notes                                        |
-| ------- | ------------------------- | ------------------ | -------------------------------------------- |
-| Header  | glass-elevated + blur     | premium-border     | Fixed nav, hover state boosts opacity        |
-| Hero    | background + overlay glow | gold accent line   | Floating animated gold accents, serif quotes |
-| Content | alternating card/secondary| premium-border     | Staggered fade-in-up animations              |
-| Cards   | glass/glass-elevated      | white/15-20 border | Scale-in entrance, hover elevates + glows    |
-| Footer  | secondary (0.35 L)        | gold top border    | Rich contrast, gold text highlights          |
+| Zone       | Background                | Border             | Notes                                        |
+| ---------- | ------------------------- | ------------------ | -------------------------------------------- |
+| Hero       | bg-background + orbs     | none               | Animated purple-blue-cyan gradient orbs      |
+| Services   | transparent or gradient   | premium-border     | 3 glass cards, benefit icons, minimal text   |
+| Demos      | bg-background            | premium-border     | Static CSS browser-chrome mockups 3-col      |
+| Demo CTA   | bg-secondary/20           | top/bottom border  | Centered single CTA button                   |
+| Testimonials| alternating card         | left-border gold   | 3 local business testimonials + results      |
+| Contact    | bg-secondary/20           | top border         | WhatsApp primary, phone secondary, socials   |
+| Footer     | secondary (0.30 L)        | gold top border    | Minimal branding + copyright                 |
 
 ## Spacing & Rhythm
 
-Hero: 10vh min-height, py-24 md:py-32 lg:py-40. Sections: px-6 md:px-12 lg:px-20, py-20 md:py-28. Card grids: gap-6 md:gap-8, staggered fade-in with 50ms per card. Labels/badges: gap-2-3. Breathing room via alternating card sections + muted-bg spacers.
+Hero: min-h-screen, py-24 md:py-32. Sections: px-6 md:px-12 lg:px-20, py-20 md:py-28. Card grids: 1 md:3 col grid, gap-6 md:gap-8. Demos: browser chrome 1 md:3 col. Testimonials: 3 col grid with left-border-4. Stagger animations: 50-100ms per card. Labels: text-xs tracking-wider. Breathing room via alternating section backgrounds (bg-secondary/20).
 
 ## Component Patterns
 
-**Buttons:** Primary gold `bg-primary text-primary-foreground` + scale-105 + shadow-elevated hover. Secondary `.glass` + gradient accent + scale-104. Icons: transparent + hover-gold gradient.
-**Cards:** `.glass`/`.glass-elevated` + `.card-tilt` (3D hover) + `.spotlight-effect` (gradient beam), scale-105 + shadow-elevated hover, rounded-lg, staggered entrance animation.
-**Badges:** Success (0.68 L green), warning (0.75 L amber), destructive (0.55 L red) on semi-transparent dark with premium borders.
-**Inputs:** border-border + focus:ring-2 ring-ring, rounded-lg, 0.20 L background.
-**Text:** Serif accents for testimonials/quotes, uppercase labels tracking-widest, hero bold tracking-tight, body leading-relaxed.
+**Hero CTA:** 2-button layout: gold primary button (px-8 py-4, rounded-xl, scale-105 hover), secondary glass button. Mobile stacks to single column.
+**Service Cards:** glass-elevated, rounded-lg, icon emoji + h3 + 3x ul bullet points. Hover: scale-105 + shadow-elevated. Icons left-aligned.
+**Browser Mockups:** Static CSS frames: browser header (3-circle close/minimize/maximize), gradient content area with company name + CTA button. No interactivity.
+**Testimonial Cards:** glass-elevated, serif quote opener, quote text, result highlight (text-primary font-semibold), name + business. Left border-4 border-primary.
+**Contact Buttons:** 2-col grid (md up), glass-elevated cards with icon + text + subtext. Hover scale + shadow. Phone and WhatsApp equal visual weight.
 
 ## Motion
 
-**Entrance:** `fade-in-up` (0.7s) full sections, `scale-in` (0.4s) cards, `float-slow` (4s) decorative accents. Stagger: 50ms per card.
-**Interaction:** 3D card tilt on mouse move (max 15° rotateX/Y), spotlight gradient beam on hover, scale-105 + shadow-elevated elevation, gradient text button hover, cursor-ring animation.
-**Decorative:** `float` (3s) hero elements, `glow-pulse` (2.5s) primary highlights, `shimmer` (2.5s) luxury text, `spotlight-move` (2s) beam animations.
-**Accessibility:** All animations respect `prefers-reduced-motion: reduce` — disables animation immediately.
+**Entrance:** Section `fade-in-up` (0.7s) on scroll, card `scale-in` (0.4s) staggered 50-100ms, gradient orbs `float-slow` (4s) in hero.
+**Interaction:** Glass cards scale-105 + shadow-elevated on hover. Buttons scale-105 + glow. Icons scale-110 on hover. Smooth transitions all via transition-smooth (0.3s cubic-bezier).
+**Decorative:** Hero gradient orbs with blur-3xl, floating elements. Badge shimmer on initial load. Minimal animation hierarchy: entrance + hover only, no auto-play.
+**Accessibility:** All animations respect `prefers-reduced-motion: reduce` — disables via media query.
 
 ## Constraints
 
-- No full-page gradients — depth via multi-layer glass + shadow system only.
-- Gold accent used sparingly: CTAs, hero highlights, footer accents, hover states. Never fill card surfaces.
-- All text meets AAA contrast: 0.96 L foreground on 0.10 L background = 18:1 ratio minimum.
-- Animations respect accessibility via prefers-reduced-motion media query.
-- Use semantic color tokens exclusively — never raw hex or arbitrary Tailwind colors.
-- Custom cursor scoped to fine-pointer devices only; does not interfere with scrolling.
+- Minimal text: benefit-focused bullets + short sentences only. No long paragraphs.
+- Gold accent (0.72 L) reserved for: hero headline, primary CTAs, testimonial results highlight, footer accents. Never on card backgrounds.
+- All text AAA contrast: 0.96 L foreground on 0.08 L background = 18:1+ minimum.
+- Mobile-first: 1 col default, md: 2-3 col grids, lg: refined spacing.
+- Browser mockups: Static CSS only, no iframe/javascript. Gradient backgrounds + company name + CTA button.
+- WhatsApp primary CTA: Always prominent, clickable link to https://wa.me/qr/BS4OWTEP5442E1.
+- Use semantic tokens exclusively — no raw hex, no arbitrary Tailwind colors.
 
 ## Signature Detail
 
-Multi-layer glass + inset gold glows, 6-tier shadow system, purple→blue gradient accents, 3D card tilt with spotlight beams, interactive cursor ring animation, and staggered motion choreography create instantly recognizable premium brand. Museum-black OKLCH foundation + serif accent typography signal editorial sophistication and cutting-edge digital expertise.
+Glassmorphism cards (0.13 L base, 0.16 L elevated) + 6-tier shadow system, luminous gold (0.72 L) CTAs and accents, purple-blue-cyan gradient orbs in hero, static browser-mockup demos with gradient backgrounds, WhatsApp as primary conversion CTA. Minimal benefit-focused copy + icon-led services create trust. Staggered entrance animations. Deep-space foundation (0.08 L) + humanist sans (DM Sans) signal modern professionalism accessible to non-tech local businesses.
 
 ## Quality Benchmarks
 
-Linear, Stripe, Notion, Vercel, Apple. Tight visual system: 2 font families, 5 core OKLCH colors, 4 type tiers, one dominant interaction pattern (3D card tilt + spotlight). Desktop-first responsive, seamless dark mode throughout.
+Conversion: Focus on WhatsApp CTA prominence, trust signals (testimonials + results), demo clarity (browser mockups). Responsive: Mobile-first 1-col default, md: 2-3 col grids. Minimal: 2 font families, 5 core OKLCH palette, 3 button states, glass + shadow depth only.

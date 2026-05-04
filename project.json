@@ -1,29 +1,28 @@
 {
-  "overview": "flowebdesign is a premium full-stack SaaS web application for a web development agency. Features a high-converting marketing site with 6 pages, Internet Identity authentication, Motoko backend for contact lead storage, and an admin dashboard for managing client inquiries.",
+  "overview": "flowebdesign is a high-converting agency website for Indian local businesses (coaching classes, gyms, cafes). It showcases web design services, demo mockups, and drives leads via WhatsApp and contact forms.",
   "features": [
-    "Premium dark glassmorphism design with purple-blue-cyan gradients",
-    "Hero section with high-impact headline and CTAs",
-    "Services showcase (Frontend, Backend, Full-Stack) with detail cards",
-    "Interactive portfolio with hover effects and case study metrics",
-    "Contact form wired to Motoko canister for persistent lead storage",
-    "Internet Identity authentication for admin access",
-    "Protected admin dashboard with contact leads table and stats",
-    "Dynamic navbar with login/logout auth state",
-    "Smooth Framer Motion animations and scroll effects",
-    "Floating WhatsApp button for instant client contact",
-    "Mobile-first responsive design",
-    "Sticky glassmorphism navbar"
+    "High-converting homepage for local businesses (coaching, gyms, cafes)",
+    "Hero with WhatsApp and Free Demo CTAs",
+    "3 benefit-focused service cards",
+    "Static browser-mockup demo previews for 3 business types",
+    "Free Demo Offer section",
+    "Local business testimonials",
+    "Contact section with WhatsApp, phone, and contact form",
+    "Admin dashboard with Internet Identity login and contact leads table",
+    "Dark glassmorphism design with purple-blue-cyan gradients"
   ],
   "category": "business-agency",
   "tags": [
-    "agency",
-    "saas",
-    "portfolio",
-    "dark-theme",
+    "web-design-agency",
+    "local-business",
+    "india",
+    "pune",
+    "whatsapp",
+    "lead-generation",
     "glassmorphism",
-    "dashboard",
-    "authentication",
-    "web-development"
+    "dark-theme",
+    "react",
+    "motoko"
   ],
-  "last_updated": "2026-04-17T04:29:00.462Z"
+  "last_updated": "2026-05-04T17:55:57.519Z"
 }

@@ -1,0 +1,21 @@
+// Version: 1.0.0
+type ContactSubmission__93684224 =
+  {
+    email : Text;
+    id : Nat;
+    message : Text;
+    name : Text;
+    projectType : Text;
+    timestamp : Int
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+actor {
+  stable var nextId : Nat;
+  stable submissions :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ContactSubmission__93684224]];
+      var elementIndex : Nat__490723111
+    }
+};
